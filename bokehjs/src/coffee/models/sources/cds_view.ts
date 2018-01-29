@@ -2,16 +2,36 @@
 import {Model} from "../../model"
 import * as p from "core/properties"
 import {intersection} from "core/util/array"
+import {DataSource} from "./data_source"
 import {ColumnarDataSource} from "./columnar_data_source"
+import {Filter} from "../filters/filter"
 import {Selection} from "../selections/selection"
 
+export namespace CDSView {
+  export interface Attrs extends Model.Attrs {
+    filters: Filter[]
+    source: DataSource
+    indices: number[]
+    indices_map: {[key: string]: number[]}
+  }
+
+  export interface Opts extends Model.Opts {}
+}
+
+export interface CDSView extends CDSView.Attrs {}
+
 export class CDSView extends Model {
+
+  constructor(attrs?: Partial<CDSView.Attrs>, opts?: CDSView.Opts) {
+    super(attrs, opts)
+  }
+
   static initClass() {
     this.prototype.type = 'CDSView'
 
     this.define({
-     filters: [ p.Array, [] ],
-     source:  [ p.Instance  ],
+      filters: [ p.Array, [] ],
+      source:  [ p.Instance  ],
     })
 
     this.internal({

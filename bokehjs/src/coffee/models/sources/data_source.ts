@@ -1,12 +1,25 @@
 import {Model} from "../../model"
 import * as p from "core/properties"
+import * as hittest from "core/hittest"
 import {isFunction} from "core/util/types"
 import {Selection} from "../selections/selection"
 
-export class DataSource extends Model {
+export namespace DataSource {
+  export interface Attrs extends Model.Attrs {
+    selected: hittest.HitTestResult
+    callback: any // XXX
+  }
 
-  selected: Selection
-  callback: any // XXX
+  export interface Opts extends Model.Opts {}
+}
+
+export interface DataSource extends DataSource.Attrs {}
+
+export abstract class DataSource extends Model {
+
+  constructor(attrs?: Partial<DataSource.Attrs>, opts?: DataSource.Opts) {
+    super(attrs, opts)
+  }
 
   static initClass() {
     this.prototype.type = "DataSource"
